@@ -1,3 +1,9 @@
 [submodule "jd-cmd"]
 	path = jd-cmd
 	url = https://github.com/kwart/jd-cmd.git
+[submodule "dex2jar-build"]
+	path = dex2jar-build
+	url = https://github.com/pxb1988/dex2jar.git
+[submodule "apktool-build"]
+	path = apktool-build
+	url = https://github.com/iBotPeaches/Apktool.git
