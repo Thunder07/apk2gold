@@ -1,6 +1,7 @@
 import sys
 import os, fnmatch
 import re
+import xml.etree.ElementTree
 
 masterdict = {}
 partial = ''
@@ -14,25 +15,14 @@ def find_files(directory, pattern):
 				yield filename
 
 # Build the R map
-for file in find_files(sys.argv[1], 'R.java'):
-	f = open(file, 'r')
-	fparray = file.split('/')
-	#path = '.'.join(fparray[fparray.index("src")+1:-1]) + "."
-	print "Processing: " + file
-	for line in f:
-		line = line.strip()
-		if line.startswith('public static final class'):
-			parts = line.split(' ')
-			partial = 'R.' + parts[4] + '.'
-		elif line.startswith('public static final int'):
-			try :
-				parts = line.split(' ')
-				idx = int(parts[6][:-1])
-				if (idx > 100000): # Heuristic
-					assoc = partial + parts[4]
-					masterdict[idx]=assoc
-			except:
-				pass
+for file in find_files(sys.argv[1], '*.xml'):
+	if file.endswith('/public.xml'):
+		print "Processing: " + file
+		e = xml.etree.ElementTree.parse(file).getroot()
+		for atype in e.findall('public'):
+			idx = int(atype.get('id'), 0)
+			if (idx > 100000):
+				masterdict[idx]="R."+atype.get('type') +"."+ atype.get('name')
 
 if verbose: print repr(masterdict)
 
