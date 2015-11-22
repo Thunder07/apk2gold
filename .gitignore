@@ -1,3 +1,4 @@
 .idea
 jd-cli.jar
 **/.DS_Store
+dex2jar/*
